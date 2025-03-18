@@ -34,7 +34,7 @@ Popular video training methods mainly operate on a fixed number of tokens sample
 
 | **Model**        | **GFLOPs**       | **Top-1** | **Top-1 + TO** |
 |------------------|------------------|-----------|----------------|
-| InternVideo2-S   | 154×12           | 85.8      |                |
+| InternVideo2-S   | 154×12           | 85.8      |       -        |
 | FluxViT-S        | 154×12           | 87.7      |      88.0      |
 | FluxViT-S        | 83×12            | 87.3      |      87.7      |
 | FluxViT-S        | 32×12            | 84.7      |      86.6      |
@@ -56,7 +56,7 @@ Popular video training methods mainly operate on a fixed number of tokens sample
 
 | **Model**        | **GFLOPs**      | **Top-1** | **Top-1 + TO** |
 |------------------|-----------------|-----------|----------------|
-| InternVideo2-S   | 154×6           | 71.5      |                |
+| InternVideo2-S   | 154×6           | 71.5      |       -        |
 | FluxViT-S        | 154×6           | 73.4      |      73.8      |
 | FluxViT-S        | 83×6            | 72.9      |      73.4      |
 | FluxViT-S        | 32×6            | 70.0      |      72.5      |

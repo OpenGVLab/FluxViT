@@ -3,7 +3,7 @@
 This repo is the official implementation of "Make Your Training Flexible: Towards Deployment-Efficient Video Models". By Chenting Wang, Kunchang Li, Tianxiang Jiang, XiangyuZeng, Yi Wang, and Limin Wang.
 
 <img src="./figs/teaser.png" alt="teaser" width="50%"/>
-
+ 
 <!-- ## Update
 
 - **2025/03/18**: We build the repo and release the paper. -->

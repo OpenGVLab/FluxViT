@@ -35,7 +35,7 @@ TBD
 | $\text{InternVideo2}_{dist}$-B/14 | K-Mash PT + K710 FT  | 8x3x4    | 88.4 | [:hugs: HF link](https://huggingface.co/OpenGVLab/InternVideo2_distillation_models/resolve/main/stage1/B14/B14_ft_k710_ft_k400_f8/pytorch_model.bin) | TBD |
 | $\text{InternVideo2}_{dist}$-L/14 | K-Mash PT + K710 FT  | 8x3x4    | 90.4 | [:hugs: HF link](https://huggingface.co/OpenGVLab/InternVideo2_distillation_models/resolve/main/stage1/L14/L14_ft_k710_ft_k400_f8/pytorch_model.bin) | TBD |
 | $\text{FluxViT}$-S/14 | K-Mash PT + K710 FT  | 8x3x4    | 87.3 | [Link](https://drive.google.com/file/d/1OTjTsAnZGaq7AufDaw8IYLeSgmLYZjds/view?usp=sharing) | [run.sh](./exp/small/eval/k400_eval.sh) |
-| $\text{FluxViT}$-B/14 | K-Mash PT + K710 FT  | 8x3x4    | 89.3 | [link](https://drive.google.com/file/d/1YsxsB3_pkpdvmXQIhD3YOmWlqCyzJskg/view?usp=sharing) | [run.sh](./exp/base/eval/k400_eval.sh) |
+| $\text{FluxViT}$-B/14 | K-Mash PT + K710 FT  | 8x3x4    | 89.3 | [Link](https://drive.google.com/file/d/1YsxsB3_pkpdvmXQIhD3YOmWlqCyzJskg/view?usp=sharing) | [run.sh](./exp/base/eval/k400_eval.sh) |
 
 
 

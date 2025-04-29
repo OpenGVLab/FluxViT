@@ -6,7 +6,7 @@ This repo is the official implementation of "[Make Your Training Flexible: Towar
  
 ## Update
 
-- **2025/04/29**: Release of the single modality evaluation script and part of model weights.
+- **2025/04/29**: Release of the single modality evaluation script and part of model weights, see [MODEL_ZOO](./single_modality/MODEL_ZOO.md).
 - **2025/03/18**: We build the repo and release the [paper](https://arxiv.org/abs/2503.14237).
 
 ## Introduction

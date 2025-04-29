@@ -1,7 +1,7 @@
 export MASTER_PORT=$((12000 + $RANDOM % 20000))
 export OMP_NUM_THREADS=1
 
-JOB_NAME='k400_small_f8_lr2e-4_w5e35_dp0.1_hdp0.1_ld0.75_g64'
+JOB_NAME='k400_base_f8_lr2e-4_w5e35_dp0.1_hdp0.1_ld0.75_g64'
 OUTPUT_DIR="$(dirname $0)/$JOB_NAME"
 LOG_DIR="./logs/${JOB_NAME}"
 PREFIX='p2:s3://k400'
@@ -52,9 +52,9 @@ srun -p $PARTITION \
     --short_side_size 252 \
     --model_res 252 \
     --save_ckpt_freq 100 \
-    --num_frames 24 \
-    --eval_orig_frame 24 \
-    --orig_t_size 24 \
+    --num_frames 32 \
+    --eval_orig_frame 32 \
+    --orig_t_size 32 \
     --num_workers 12 \
     --warmup_epochs 1 \
     --tubelet_size 1 \

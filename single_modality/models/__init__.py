@@ -1,0 +1,1 @@
+from .fluxvit import fluxvit_small_patch14, fluxvit_base_patch14

@@ -265,6 +265,8 @@ class Attention(nn.Module):
         if self.use_lpe:
             v = v.permute(0, 2, 1, 3).reshape(B, N, -1)
             lpe = v.contiguous().permute(0, 2, 1)
+            B, C, N = lpe.shape
+            lpe = lpe.reshape(B, C, 1, N, 1)
             v_lpe = self.lpe(lpe).squeeze().permute(0, 2, 1)
             v = v.reshape(B, N, self.num_heads, C // self.num_heads).permute(0, 2, 1, 3)
         
@@ -558,26 +560,17 @@ class VidTLDRBlock(nn.Module):
     def forward(self, x, residual=None, num_merging_to=None, return_attn=False):
 
         def _inner_forward(x, residual=None, num_merging_to=None, return_attn=False):
-            x, residual = self.norm1(x, residual)
-            x, qkv = self.attn(x)
-
-            if (num_merging_to is not None and (num_merging_to + 1) < x.shape[1]) or return_attn:
-                with torch.no_grad():
-                    q, k, _ = qkv.permute(2, 0, 3, 1, 4).unbind(0)
-                    attn = ((q * self.attn.scale) @ k.transpose(-2, -1))
-                    attn = attn.softmax(dim=-1)
-
-            x = self.drop_path1(self.ls1(x))
-            
-            if num_merging_to is not None and num_merging_to + 1 < x.shape[1]:
-                merge = vidTLDR(x, attn, num_merging_to)
-                x = merge(x)
-                residual = merge(residual)
-            
-            x, residual = self.norm2(x, residual)
-            x = self.drop_path2(self.ls2(self.mlp(x)))
-            
-            return x, residual
+            if self.use_fused_rmsnorm:
+                x, residual = self.norm1(x, residual)
+                x = self.drop_path1(self.ls1(self.attn(x)))
+                x, residual = self.norm2(x, residual)
+                x = self.drop_path2(self.ls2(self.mlp(x)))
+                return x, residual
+            else:
+                assert residual is None
+                x = x + self.drop_path1(self.ls1(self.attn(self.norm1(x))))
+                x = x + self.drop_path2(self.ls2(self.mlp(self.norm2(x))))
+                return x
         
         if self.with_cp:
             return checkpoint.checkpoint(_inner_forward, x, residual, num_merging_to, return_attn)
@@ -682,15 +675,15 @@ class FluxViT(nn.Module):
         
         self.blocks = nn.ModuleList([
             VidTLDRBlock(embed_dim, num_heads, mlp_ratio, qkv_bias=qkv_bias,
-                  norm_layer=flash_norm_layer_for_blocks,
+                  norm_layer=flash_norm_layer_for_blocks if use_flash_attn else norm_layer_for_blocks,
                   drop_path=dpr[i], init_values=init_values, attn_drop=0.,
-                  use_flash_attn=True, 
-                  use_fused_mlp=True,
+                  use_flash_attn=use_flash_attn, 
+                  use_fused_mlp=use_fused_mlp,
                   fused_mlp_heuristic=fused_mlp_heuristic,
                   with_cp=with_cp_list[i],
                   qk_normalization=qk_normalization,
                   layerscale_no_force_fp32=layerscale_no_force_fp32,
-                  use_fused_rmsnorm=True,
+                  use_fused_rmsnorm=use_fused_rmsnorm,
                   index=i,
                   use_lpe=use_lpe)
             for i in range(depth)]

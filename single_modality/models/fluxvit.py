@@ -287,7 +287,7 @@ class Attention(nn.Module):
             return x, attn_
         return x
     
-    def _flash_attn(self, x, key_padding_mask=None, need_weights=False):
+    def _flash_attn(self, x, key_padding_mask=None, need_weights=False, require_qkv=False):
         B, N, C = x.shape
         qkv = self.qkv(x)
         qkv = rearrange(qkv, "b s (three h d) -> b s three h d", three=3, h=self.num_heads)
@@ -319,7 +319,11 @@ class Attention(nn.Module):
             outs = self.proj(rearrange(context, "b s h d -> b s (h d)"))
         
         outs = self.proj_drop(outs)
-        return outs, qkv
+
+        if require_qkv: 
+            return outs, qkv
+        else:
+            return outs
     
     def forward(self, x, return_attn=False):
         x = self._naive_attn(x, return_attn=return_attn) if not self.use_flash_attn else self._flash_attn(x)
